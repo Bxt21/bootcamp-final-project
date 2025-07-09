@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Traffic Sign Detector</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input[type="file"] {
+      margin-bottom: 15px;
+    }
+
+    input[type="submit"] {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    img {
+      margin-top: 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .result {
+      margin-top: 25px;
+      text-align: left;
+    }
+
+    .result h2 {
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin: 8px 0;
+      font-size: 1em;
+    }
+
+    .confidence {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Upload a Traffic Sign Image</h1>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="image" required><br>
+      <input type="submit" value="Predict">
+    </form>
+
+    {% if predictions %}
+      <img src="{{ image_path }}" width="300" alt="Uploaded Image">
+      <div class="result">
+        <h2>Top 3 Predictions:</h2>
+        <ul>
+          {% for label, confidence in predictions %}
+            <li>
+              <span class="prediction-label">{{ label }}</span>:
+              <span class="confidence">{{ '%.2f'|format(confidence * 100) }}%</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% elif image_path %}
+      <div class="result">
+        <p>No predictions found.</p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
